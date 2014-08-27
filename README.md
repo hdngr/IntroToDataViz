@@ -1,7 +1,7 @@
 IntroToDataViz
 ==============
 
-Curriculum for a 16 week course, originally taught at Portland Code School July 2014.
+Curriculum for a 4 week seminar style course, originally taught at Portland Code School in the Fall of 2014.
 
 Current course offering can be found [here](#).
 

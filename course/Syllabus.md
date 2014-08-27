@@ -6,7 +6,7 @@ July 2014
 >
 >Email: **h@graphalchemist.com**
 >
->Office Hours: **TBD**
+>Office Hours: Are not scheduled for this course, however feel free to reach out if you want to talk some of the material through.
 
 #Course Objectives
 1. Obtain strong theoretical understanding of data visualization techniques and approaches
@@ -17,9 +17,9 @@ July 2014
 1. Obtain skills for presenting data visualization final products
 
 #Expectations
-* **Time Commitment:**  This class meets Monday and Wednesdays from 7-9PM for the duration of the 16 weeks, ?as well as the second Saturday of every month.?  Additionally, most weeks students should be devoting 15-20 hours a week outside of class to topics covered.  Bottom line, in order to get the most out of this class, students should look at this course as a second job - one with great coworkers and no boss!
+* **Time Commitment:**  This class meets on Saturdays in November (11/1, 11/8, 11/15, 11/22) from 10AM-5PM.  Additionally, most weeks students should be devoting 5-10 hours a week outside of the seminar to topics covered.  Bottom line, in order to get the most out of this class, students should look at this course as a second job - one with great coworkers and no boss!
 
-* **Location:** Typically, this class will meet in one of the Portland Code School Classrooms.  However, from time to time, we may meet outside of the classroom and attend local meetups, or meet with local techn companies.
+* **Location:** This class will meet in one of the Portland Code School Classrooms.  However, from time to time, we may meet outside of the classroom and attend local meetups, or meet with local techn companies.
 
 * **Calendar:** You should have been invited to the PCS calendar.  Please make sure that this is synced with your personal calendar, as schedules may shift from time to time.
 
@@ -51,91 +51,56 @@ After getting some of the data viz basics under your belt, you will be asked to 
 Deadlines for the projects are mentioned in the class schedule.During the final week of class, students will present their completed projects to their fellow students, staff, and members of the Portland Code School employer network.
 
 #Class Schedule
-##Part 1
+
 ##Week 1
 * Course Overview
-* Data: Intro to Data Structures
-* Code: Intro to d3.js and svg
-* Workflow: [bl.ocks.org](http://bl.ocks.org) a gist reader for d3
-* Theory: David McCandless - The beauty of data visualization
-* Data: Introduction to Callbacks
+* Code: 
+    * Intro to d3.js and svg
+    * d3.js, databinding, selections, and manipulating the DOM
+    * d3.js, core
+* Workflow: 
+    * [bl.ocks.org](http://bl.ocks.org) a gist reader for d3
+    * Intro to [Yeoman.io](http://yeoman.io/)
+* Working with Data: Introduction to Callbacks
+* Theory: 
+    * Manual Lima - [The Power of Networks](https://www.youtube.com/watch?v=nJmGrNdJ5Gw)
+    * Edward Tufte - [Highlights](https://www.youtube.com/watch?v=Th_1azZA2OY)
+* Final Project: Introduce project, pick teams, white board ideas
 
-##Week 2
-* Code: d3.js, databinding, selections, and manipulating the DOM
-* Workflow: Intro to Yeoman.io
-* Theory: Manual Lima - The Power of Networks
-* Professional: Local Tech Firm Visit
+##Week 2 
+* Workflow: Advanced configurations with Grunt
+* Using d3.js with Angular
+* Code:
+    * d3 svg
+    * d3 layouts
+    * d3 transitions
+    * d3 behaviors
+* Auxillary: Using sass
+* Theory: David McCandless - [The Beauty of Data](https://www.youtube.com/watch?v=5Zg-C8AAIGg)
+* Final Project: Pick data set and napkin/white board draft of visualization
 
 ##Week 3
-* Code: d3.js, core
-* Theory: Mike Bostock on Force Layout
-* Auxiliary: Sass
+* Code: 
+    * d3 scales
+    * d3 colors
+    * advanced data binding with d3 
+    * working with data using d3
+* Theory: Mike Bostock - [Force Layout Talk](http://vimeo.com/29458354)
+* Auxiliary: Lo-Dash for working with data
 * Professional: Meetup
 
 ##Week 4
-* Code: d3.js, core continued
-* Project: DUE - pick final project groups and topic
-* Theory: James Fowler - Back to the Village
-* Auxiliary: Lo-Dash
-
-##Week 5
-* Code: d3.js, core continued
-* Auxiliary: Coffee Script
-* Theory: Math for Data Visualization
-
-##Week 6
-* Code: d3.js, layouts and behaviors
-* Theory: Getting Big, K-Nearest Neighbors
-* Project: DUE - data set chosen and initial 'napkin' stories
-* Workflow: Getting Setup with Python   
-* Professional: Local Tech Firm Visit
-
-##Week 7
-* Code: d3.js, layouts and behaviors continued
-* Theory: [Focusing on the User and Data Literacy - Kim Rees](https://www.youtube.com/watch?v=1APb6-IKqas)
-* Auxiliary: 30 Minutes with Python 
-* Data: Data Cleaning in Python  
-
-##Week 8
-* Code: d3.js, layouts and behaviors continued
-* Project: DUE - Draft data set cleaned and ready for use in app
-* Theory: [Tufte](http://blip.tv/vizworld/edward-tufte-interview-2606471)
-* Professional: Open-source me!
-
-##Part 2
-##Week 9
-* Code: d3.js, making visualizations interactive
-* Workflow: Going deep with Yeoman.io, Configuring Grunt
-* Data: Getting advanced with callbacks
-
-##Week 10
-* Code: Intro to Leaflet.js
-* Project: Group topics and data set due for any Part II newcomers
-* Data: GeoJSON
-* Theory: [Geo Design - Jack Dangermond ](Jack Dangermond ) 
-* Professional: [MapBox - Eric Gunderson](https://www.youtube.com/watch?v=xovRk6IAWgo) + Tech Company Visit
-
-##Week 11
-* Code: Leaflet.js
-* Professional: [Dan Berkenstock - The world is one big dataset](https://www.ted.com/talks/dan_berkenstock_the_world_is_one_big_dataset_now_how_to_photograph_it)
-* Data: Dealing with location data
-
-##Week 12
-* Code: Review of d3 layouts
-* Project: Pair Coding and Group Work
-
-##Week 13
-* Code: Review of d3 behaviors
-* Project: Pair Coding and Group Work
-
-##Week 14
-* Code: Review of d3 colors
-* Project: DUE Draft of Final Project
-
-##Week 15
-* Code: Pair Coding and Group Work
-* Project: DUE Final Project Complete and Presentation Draft
-
-##Week 16
-* Final Project Presentation Prep and Practice
-* Professional: Project Presentations and "Pitch" prep
+* Code: 
+    * Putting it all together:
+        * d3 interactions 
+        * d3 colors
+        * API data calls
+        * d3 layouts
+    * Introduction to other data visualizations tools:
+        * Leaflet.js and Mapbox
+        * R and ggplot
+* Project: 
+    * Present final (or draft visualizations)
+    * Share all challenges faced for benefit of other teams
+* Theory: James Fowler - [Back to the Village](https://www.youtube.com/watch?v=MZAmkIp8aI4)
+* Auxiliary: Coffee script
