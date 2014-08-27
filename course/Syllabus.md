@@ -1,12 +1,17 @@
 Intro to Data Visualization for the Web
 =============
-July 2014
+November 2014
 
->Instructor: **Huston Hedinger**
+>Instructor: [**Huston Hedinger**](https://github.com/hustonhedinger)
 >
 >Email: **h@graphalchemist.com**
 >
 >Office Hours: Are not scheduled for this course, however feel free to reach out if you want to talk some of the material through.
+
+#Course Overview
+Intro to Data Visualization for the Web is a 4 week intensive seminar style course design to take students from "A to Z" in data visualization concepts and implementation.  The course hinges heavily around d3.js, and brings in several modern work flow tools (like yeoman), language extensions (CoffeeScript, Sass), and modern Javascript frameworks (Angular).  The goal is to give students the confident to build modern, browser based visualization applications at scale.
+
+This course will be valuable for a range of experience levels.  The entire course will feature specialized skills from the intermediate to advanced level.  At a minimum, highly motivated students, should have introductory experience with JavaScript and an understanding of functional programming techniques.  However, most students will have a solid grasp of JavaScript fundamentals and object oriented programming.
 
 #Course Objectives
 1. Obtain strong theoretical understanding of data visualization techniques and approaches
