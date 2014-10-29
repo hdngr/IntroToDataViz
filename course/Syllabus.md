@@ -6,7 +6,7 @@ November 2014
 >
 >Email: **h@graphalchemist.com**
 >
->Office Hours: Are not scheduled for this course, however feel free to reach out if you want to talk some of the material through.
+>Office Hours: Will be held at Portlance Code School from 6-9PM every Tuesday evening throughout the course.
 
 #Course Overview
 Intro to Data Visualization for the Web is a 4 week intensive seminar style course design to take students from "A to Z" in data visualization concepts and implementation.  The course hinges heavily around d3.js, and brings in several modern work flow tools (like yeoman), language extensions (CoffeeScript, Sass), and modern Javascript frameworks (Angular).  The goal is to give students the confidence to build modern, browser based visualization applications at scale.
