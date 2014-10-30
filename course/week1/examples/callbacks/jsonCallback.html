@@ -1,0 +1,21 @@
+<html>
+<head>
+</head>
+
+<body>
+    <div>
+        <svg id="circles"></svg>
+    </div>
+    <!-- Include d3.js -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        // data.gov consumer complaint api
+        // data docs here: http://catalog.data.gov/dataset/consumer-complaint-database
+        // api docs here: http://www.consumerfinance.gov/complaintdatabase/technical-documentation/#field-reference
+
+        d3.json("http://data.consumerfinance.gov/api/views/x94z-ydhh/rows.json?max_rows=10", function (data) {
+            // do something
+        });
+
+    </script>
+</body>
