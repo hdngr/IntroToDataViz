@@ -24,7 +24,7 @@ This course will be valuable for a range of experience levels.  The entire cours
 #Expectations
 * **Time Commitment:**  This class meets on Saturdays in November (11/1, 11/8, 11/15, 11/22) from 10AM-5PM.  Additionally, most weeks students should be devoting 5-10 hours a week outside of the seminar to topics covered.  Bottom line, in order to get the most out of this class, students should look at this course as a second job - one with great coworkers and no boss!
 
-* **Location:** This class will meet in one of the Portland Code School Classrooms.  However, from time to time, we may meet outside of the classroom and attend local meetups, or meet with local techn companies.
+* **Location:** This class will meet in one of the Portland Code School Classrooms.  However, from time to time, we may meet outside of the classroom and attend local meetups, or meet with local tech companies.
 
 * **Calendar:** You should have been invited to the PCS calendar.  Please make sure that this is synced with your personal calendar, as schedules may shift from time to time.
 
@@ -53,7 +53,7 @@ If you experience or perceive a problem, attempt to work it out on your own, if 
 #Student Projects
 After getting some of the data viz basics under your belt, you will be asked to begin thinking about a final project that you can complete as an individual or with up to 3 people in a group.
 
-Deadlines for the projects are mentioned in the class schedule.During the final week of class, students will present their completed projects to their fellow students, staff, and members of the Portland Code School employer network.
+Deadlines for the projects are mentioned in the class schedule. During the final week of class, students will present their completed projects to their fellow students, staff, and members of the Portland Code School employer network.
 
 #Class Schedule
 
