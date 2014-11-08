@@ -122,60 +122,22 @@
         var area = d3.svg.area()
                         .x(function(d) { 
                             return xScale(d.x) })
-                        .y0(function(d) { return yScale( d.y0 ) })
-                        .y1(function(d) { return yScale( d.y ) });
+                        .y0(function(d) { return yScale( 0) })
+                        .y1(function(d) { return yScale( d.y  ) });
 
         d3.csv('../../../../course/data/Inequality.csv', function(data) {            
             skipYear = ["Top10", "Top1", "Top05", "Top01"]
-            // skipYear = skipYear.reverse()
-
-            // OR
-            // skipYear = Object.keys(d).filter(function(key) {
-            //         if (key !== "Year") {
-            //             return key
-            //         };
-            //      });
 
             layeredData = skipYear.map(function(segment) { 
                 return data.map(function(d) {
                         return {
                           y: parseInt( d[segment] ),
-                          x: str2Date(d.Year),
-                          y0: 0
+                          x: str2Date(d.Year)
                         }
                     });
             });
-                    // switch(segment){
-                    //     case "Top10":
-                    //         return {
-                    //                   y: parseInt( d[segment] ),
-                    //                   x: str2Date(d.Year),
-                    //                   y0: 0
-                    //                }
-                    //     case "Top1":
-                    //         return {
-                    //                 y: parseInt( d[segment] ) - parseInt( d["Top10"]),
-                    //                 x: str2Date(d.Year),
-                    //                y0: 0
-                    //         }
-                    //     case "Top05":
-                    //         return {
-                    //                 y: parseInt( d[segment] ) - (parseInt( d["Top10"]) + parseInt(d["Top1"])),
-                    //                 x: str2Date(d.Year),
-                    //                y0: 0
-                    //         }
-                    //     case "Top01":
-                    //         return {
-                    //                 y: parseInt( d[segment] ) - (parseInt( d["Top10"]) + parseInt(d["Top1"]) + parseInt(d["Top05"]) ),
-                    //                 x: str2Date(d.Year),
-                    //                y0: 0
-                    //         }
-                    // };
-                //     });
-                // });
             
             layers = stack(layeredData)
-            // viz.datum(data);
 
             viz.append("g")
                 .attr("class", "x axis")
@@ -185,10 +147,6 @@
             viz.append("g")
                 .attr("class", "y axis")
                 .call(yAxis);
-
-            // viz.append("path")
-            //     .attr("d", line)
-            //     .attr("class", "theline");
 
             viz.selectAll('g.layers')
                 .data(layers)
