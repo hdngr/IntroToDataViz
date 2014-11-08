@@ -4,7 +4,9 @@
 
 <body>
     <div>
-        <svg id="circles"></svg>
+        <svg id="circles">
+
+        </svg>
     </div>
 
     <!-- Include d3.js -->
@@ -44,6 +46,7 @@
                 "color": "#00ffff"
             }
 
+
             data.forEach(function(d, i, array) {
                 if (d.Company === commonwealth.name) {
                     commonwealth.score++
@@ -59,16 +62,18 @@
                 }
             });
             
-            dataForBinding.push(jpmorgan, equifax, transunion, commonwealth)
+            dataForBinding.push(jpmorgan, equifax, transunion, commonwealth, {}, {})
+
             
             circles = circlesSVG.selectAll('circle')
                             .data(dataForBinding)
                             .enter()
                             .append('circle')
-                    
             circles.attr('cx', function() { return Math.max(0, Math.random() * width ) })
                     .attr('cy', function() { return Math.max(0, Math.random() * height) })
-                    .attr('r', function(d) { return d.score / 100 })
+                    .attr('r', function(d, i) { 
+                        debugger;
+                        return d.score / 100 })
                     .style('fill', function(d) { return d.color })
         });
     </script>

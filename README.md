@@ -16,3 +16,4 @@ cd this_repo
 python -m SimpleHTTPServer
 # navigate to any of the examples folders
 # eg. course/week1/examples/selections
+```

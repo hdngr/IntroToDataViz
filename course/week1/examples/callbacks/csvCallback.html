@@ -9,60 +9,63 @@
     <!-- Include d3.js -->
     <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
     <script type="text/javascript">
-        // basic way to grab data, grabs all of it
-        height = 800
-        width = 1000 
+        // // basic way to grab data, grabs all of it
+        // height = 800
+        // width = 1000 
 
-        circlesSVG = d3.select('#circles')
-                        .attr('height', height)
-                        .attr('width', width)
+        // circlesSVG = d3.select('#circles')
+        //                 .attr('height', height)
+        //                 .attr('width', width)
 
-        circlesSVG.append('circle')
-                    .attr('cx', Math.max(0, Math.random() * width))
-                    .attr('cy', Math.max(0, Math.random() * height))
-                    .attr('r', 100)
-                    .style('fill', 'orange')
+        // circlesSVG.append('circle')
+        //             .attr('cx', 250)
+        //             .attr('cy', 500)
+        //             .attr('r', 100)
+        //             .style('fill', 'orange')
 
-        d3.csv('../../../../course/data/Consumer_Complaints.csv', function(data) {
-            // do the damn things
+        // d3.csv('../../../../course/data/Consumer_Complaints.csv', function(data) {
+        //     // do the damn things
 
-            // size of circles
-            commonwealth = 0
-            jpmorgan = 0
-            equifax = 0
-            transunion = 0
+        //     // size of circles
+        //     commonwealth = 0
+        //     jpmorgan = 0
+        //     equifax = 0
+        //     transunion = 0
 
-            data.forEach(function(d, i, array) {
-                if (d.Company === "Commonwealth Financial Systems, Inc.") {
-                    commonwealth++
-                }
-                else if (d.Company === "JPMorgan Chase") {
-                    jpmorgan++
-                }
-                else if (d.Company === "Equifax") {
-                    equifax++
-                }
-                else if (d.Company === "TransUnion") {
-                    transunion++
-                }
-            });
-            console.log(commonwealth);
-            console.log(jpmorgan);
-            console.log(equifax);
-            console.log(transunion);
+        //     data.forEach(function(d, i, array) {
+        //         if (d.Company === "Commonwealth Financial Systems, Inc.") {
+        //             commonwealth++
+        //         }
+        //         else if (d.Company === "JPMorgan Chase") {
+        //             jpmorgan++
+        //         }
+        //         else if (d.Company === "Equifax") {
+        //             equifax++
+        //         }
+        //         else if (d.Company === "TransUnion") {
+        //             transunion++
+        //         }
+        //     });
+        //     console.log(commonwealth);
+        //     console.log(jpmorgan);
+        //     console.log(equifax);
+        //     console.log(transunion);
 
-            circlesSVG.select('circle').attr('r', jpmorgan / 100);
+        //     circlesSVG.select('circle')
+        //                 .attr('r', jpmorgan / 100);
     
-        });
+        // });
 
         // better way to play with large data set, only grab 10 rows
-        // d3.csv('../../../../course/data/Consumer_Complaints.csv')
-        //     .row(function(d,i) {
-        //         if (i <= 9) {
-        //             // do the damn thing
-        //             console.log(d);
-        //         }
-        //         })
-        //     .get(function(error, rows) { console.log(error); }); 
+        d3.csv('../../../../course/data/Consumer_Complaints.csv')
+            .row(function(d,i) {
+                if (i <= 9) {
+                    // do the damn thing
+                    return d
+                }
+                })
+            .get(function(error, rows) { 
+                debugger;
+                console.log(error); }); 
     </script>
 </body>

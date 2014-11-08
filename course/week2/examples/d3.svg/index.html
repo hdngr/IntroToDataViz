@@ -1,0 +1,107 @@
+<html>
+<head>
+</head>
+<style>
+    body {
+      font: 10px sans-serif;
+    }
+
+    #chart {
+        padding: 25px;
+    }
+
+    .axis path, .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .theline {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+
+    .dots circle {
+      fill: white;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+</style>
+<body>
+
+    <div id="chart">
+    </div>
+
+    <!-- Include d3.js -->
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        
+        height = 500
+        width = 500
+        margin = 50
+
+        d3.select("#chart").append("h1")
+                            .text("Percentage of overall wealth owned by the wealthiest 1% of Americans over time.")
+
+        var viz = d3.select("#chart").append("svg")
+                                        .attr("id", "viz")
+                                        .attr('height', height + margin * 2)
+                                        .attr('width', width + margin * 2)
+                                     .append('g')
+                                        .attr("transform", "translate(" + margin + "," + margin + ")");
+
+        var xScale = d3.scale.linear()
+                              .domain(["1800", "2020"])
+                              .range([0, width]);
+
+        // the data is in percentages, so the y domain is 0-100 as in percent.
+        var yScale = d3.scale.linear()
+                              .domain([0, 100])
+                              .range([height, 0])
+
+        var xAxis = d3.svg.axis()
+                            .scale(xScale)
+                            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+                            .scale(yScale)
+                            .orient("left");
+
+
+        var line = d3.svg.line()
+                        .x(function(d) { return xScale( d.Year ); })
+                        .y(function(d) { return yScale( parseFloat(d.Top1) ); })
+                        .interpolate("linear");
+
+        d3.csv('../../../../course/data/Inequality.csv', function(data) {
+
+            viz.datum(data)
+
+            viz.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            viz.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+
+            viz.append("path")
+                .attr("d", line)
+                .attr("class", "theline");
+
+            
+            dots = viz.selectAll("g.dots")
+                        .data(data)
+                        .enter().append("g");
+
+            dots.attr("transform", function(d) {
+                return "translate(" + line.x()(d) + "," + line.y()(d) + ")"});
+
+            dots.append("circle")
+                 .attr("r", 3.5);
+
+            })
+    </script>
+</body>
