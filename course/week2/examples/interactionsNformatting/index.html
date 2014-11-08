@@ -59,10 +59,11 @@
                             .text("Percentage of overall wealth owned by the wealthiest 1% of Americans over time.")
 
         var viz = d3.select("#chart").append("svg")
-                                        .attr("id", "viz")
+                                        .attr('id', 'container')
                                         .attr('height', height + margin * 2)
                                         .attr('width', width + margin * 2)
                                      .append('g')
+                                        .attr("id", "viz")
                                         .attr("transform", "translate(" + margin + "," + margin + ")");
         // converts a year string to a JavaScript date object
         function str2Date(year) {
@@ -118,8 +119,7 @@
             viz.append("path")
                 .attr("d", line)
                 .attr("class", "theline");
-
-            
+    
             var dots = viz.selectAll("g.dots")
                         .data(data)
                         .enter().append("g");
@@ -131,6 +131,16 @@
                  .attr("r", 3.5)
                  .on("mouseover", dotMouseOver)
                  .on("mouseout", dotMouseOut);
+
+            function wezoomed() {
+              viz.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            };
+
+            var zoom = d3.behavior.zoom()
+                                   .scaleExtent([1, 10])
+                                   .on("zoom", wezoomed);
+
+            d3.select("#container").call(zoom);
 
             function dotMouseOver(d) {
               yearCursor.attr('class', 'visible')
@@ -151,13 +161,12 @@
                   .classed({'hovered': true});
                   // or you could write like this,
                   // .classed('hovered', true)
-                       };
+            };
 
             function dotMouseOut(d) {
               yearCursor.attr('class', 'invisible');
               viz.select('.theline')
                   .classed('hovered', false);
-
             };
 
 
