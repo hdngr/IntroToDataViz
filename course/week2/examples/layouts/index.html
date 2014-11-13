@@ -122,8 +122,8 @@
         var area = d3.svg.area()
                         .x(function(d) { 
                             return xScale(d.x) })
-                        .y0(function(d) { return yScale( 0) })
-                        .y1(function(d) { return yScale( d.y  ) });
+                        .y0(function(d) { return yScale( 0 ) })
+                        .y1(function(d) { return yScale( d.y ) });
 
         d3.csv('../../../../course/data/Inequality.csv', function(data) {            
             skipYear = ["Top10", "Top1", "Top05", "Top01"]
@@ -133,9 +133,10 @@
                         return {
                           y: parseInt( d[segment] ),
                           x: str2Date(d.Year)
+                          // y0: d["Top1"] ? d[segment]==="Top10" : 0)
                         }
                     });
-            });
+                });
             
             layers = stack(layeredData)
 
@@ -158,6 +159,7 @@
                     return skipYear[i] })
                 .append("path")
                 .attr("d", function (d) {
+                    debugger;
                     return area(d)
                 })
                 .attr('class', "stackedpath");

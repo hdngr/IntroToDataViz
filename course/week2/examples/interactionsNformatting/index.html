@@ -65,6 +65,7 @@
                                      .append('g')
                                         .attr("id", "viz")
                                         .attr("transform", "translate(" + margin + "," + margin + ")");
+        
         // converts a year string to a JavaScript date object
         function str2Date(year) {
           return new Date(year)
@@ -137,7 +138,7 @@
             };
 
             var zoom = d3.behavior.zoom()
-                                   .scaleExtent([1, 10])
+                                   .scaleExtent([0.7, 10])
                                    .on("zoom", wezoomed);
 
             d3.select("#container").call(zoom);

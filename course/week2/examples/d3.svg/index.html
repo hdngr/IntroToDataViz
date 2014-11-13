@@ -58,7 +58,7 @@
         // the data is in percentages, so the y domain is 0-100 as in percent.
         var yScale = d3.scale.linear()
                               .domain([0, 100])
-                              .range([height, 0])
+                              .range([height, 0]);
 
         var xAxis = d3.svg.axis()
                             .scale(xScale)
@@ -76,7 +76,7 @@
 
         d3.csv('../../../../course/data/Inequality.csv', function(data) {
 
-            viz.datum(data)
+            viz.datum(data);
 
             viz.append("g")
                 .attr("class", "x axis")
@@ -94,7 +94,9 @@
             
             dots = viz.selectAll("g.dots")
                         .data(data)
-                        .enter().append("g");
+                        .enter()
+                        .append("g")
+                         .attr('class', 'dots');
 
             dots.attr("transform", function(d) {
                 return "translate(" + line.x()(d) + "," + line.y()(d) + ")"});
@@ -102,6 +104,6 @@
             dots.append("circle")
                  .attr("r", 3.5);
 
-            })
+            });
     </script>
 </body>
