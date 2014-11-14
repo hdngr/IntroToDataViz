@@ -7,150 +7,132 @@
   
   <!-- Data manipulations -->
   <script type="text/javascript">
-          var dataFromCallback = undefined,
-                arrayOfNumbers = undefined,
-                    itsAnArray = undefined,
-                theShiftMethod = undefined,
-             firstLocationof71 = undefined,
-                  thePopMethod = undefined,
-       arrayOfNumbersAscending = undefined,
-      arrayOfNumbersDescending = undefined,
-                   arrayMinVal = undefined,
-                   arrayMaxVal = undefined,
-      arrayMinValGreaterThan58 = undefined,
-         arrayMaxValLessThan76 = undefined,
-               extentOfAnArray = undefined,
-               extentOfAnArray = undefined,
-               randomizedArray = undefined,
-       uniqueValuesFromAnArray = undefined,
-                  shouldBeTrue = undefined,
-                 shouldBeFalse = undefined,
-                 removedAll58s = undefined;
+    var datas = {};
 
-                 var loDashSet = undefined,
-           loDashRemoveNumbers = undefined,
-                   falseyArray = undefined,
-                  compactArray = undefined,
-         multiDimensionalArray = undefined,
-                flattenedArray = undefined,
-             interesectedArray = undefined,
-              differencedArray = undefined,
-                   unitedArray = undefined;
 
     d3.csv('../../../../course/data/Inequality.csv', function(data) {
 
+      d3.csv('../../../../course/data/USgdpGrowthAndPerCapita.csv', function(data) {
+        debugger;
+      });
         // set global variable, so we can access it out side of the callback
         dataFromCallback = data;
         
-        // lets make this an array of numbers, instead of an array
-        // of objects
-        arrayOfNumbers = dataFromCallback.map(function(d) { 
-          return parseInt(d.Top10)});
-        // lets make sure its an array
-        itsAnArray = Array.isArray(arrayOfNumbers);
-        // remove the last element of an array
-        dummyArray = _.clone(arrayOfNumbers);
-        thePopMethod = dummyArray.pop()
-        // remove the first element of an array
-        dummyArray = _.clone(arrayOfNumbers);
-        theShiftMethod = dummyArray.shift();
-        // take a look at other JavaScript built ins
-        // array.reverse, array.splice, array.unshift, array.join
-        // find the first occurrence of 71 and tell me the location
-        firstLocationof71 = arrayOfNumbers.indexOf(71);
 
-        // sort that array using JavaScript Array.prototype.sort 
-        // and d3 built ins
-        dummyArray = _.clone(arrayOfNumbers);
-        arrayOfNumbersAscending = dummyArray.sort(d3.ascending);
-        dummyArray = _.clone(arrayOfNumbers);
-        arrayOfNumbersDescending = dummyArray.sort(d3.descending);
 
-        // find minimum value
-        arrayMinVal = d3.min(arrayOfNumbers)
-        // find the maximum value
-        arrayMaxVal = d3.max(arrayOfNumbers);
-        // use an accessor
-        arrayMinValGreaterThan58 = d3.min(arrayOfNumbers, function(d){
-          return d > 58 ? d : undefined });
-        arrayMaxValLessThan76 = d3.max(arrayOfNumbers, function(d){
-          if (d < 76) return d 
-          });
-        // do them both
-        extentOfAnArray = d3.extent(arrayOfNumbers);
-        // do them both with an accessor
-        extentOfAnArray72to60 = d3.extent(arrayOfNumbers, function(d){
-          if (72 > d && d > 60) return d 
-          });
-        // also try d3.mean, d3.median, d3.quantile, and bisect methods...
-        // randomly shuffle an array
-        dummyArray = _.clone(arrayOfNumbers);
-        randomizedArray = d3.shuffle(dummyArray)
 
-        // create a d3 set
-        ourD3Set = d3.set(arrayOfNumbers);
-        // return the unique values in an array
-        // careful, returns strings!
-        uniqueValuesFromAnArray = ourD3Set.values();
-        // check if a value exists in an array
-        shouldBeTrue = ourD3Set.has(58);
-        shouldBeFalse = ourD3Set.has(10000000);
-        // remove a value from an array
-        // dummyArray = ourD3Set.
-        removedAll58s = (function() {
-          ourD3Set.remove(58);
-          return ourD3Set.values()
-        })();
 
-        // lo-dash array and collection methods
-        // Create an array with all duplicate values removed
-        // similar to operating on d3 sets
-        loDashSet = _.unique(arrayOfNumbers)
 
-        // remove certain elements
-        loDashRemoveNumbers = _.remove(arrayOfNumbers, function(element){
-          return element % 10 == 0; });
 
-        // create an array with falsey values
-        falseyArray = _.chain(arrayOfNumbers)
-                        .clone()
-                        .push(undefined, false, false, undefined,undefined)
-                        .shuffle()
-                        .value();
-        // or
-        // falseyArray = _.clone(arrayOfNumbers);
-        // falseyArray.push(undefined, false, false, undefined, undefined);
-        // falseyArray = _.shuffle(falseyArray);
+        // // lets make this an array of numbers, instead of an array
+        // // of objects
+        // arrayOfNumbers = dataFromCallback.map(function(d) { 
+        //   return parseInt(d.Top10)});
+        // // lets make sure its an array
+        // itsAnArray = Array.isArray(arrayOfNumbers);
+        // // remove the last element of an array
+        // dummyArray = _.clone(arrayOfNumbers);
+        // thePopMethod = dummyArray.pop()
+        // // remove the first element of an array
+        // dummyArray = _.clone(arrayOfNumbers);
+        // theShiftMethod = dummyArray.shift();
+        // // take a look at other JavaScript built ins
+        // // array.reverse, array.splice, array.unshift, array.join
+        // // find the first occurrence of 71 and tell me the location
+        // firstLocationof71 = arrayOfNumbers.indexOf(71);
+
+        // // sort that array using JavaScript Array.prototype.sort 
+        // // and d3 built ins
+        // dummyArray = _.clone(arrayOfNumbers);
+        // arrayOfNumbersAscending = dummyArray.sort(d3.ascending);
+        // dummyArray = _.clone(arrayOfNumbers);
+        // arrayOfNumbersDescending = dummyArray.sort(d3.descending);
+
+        // // find minimum value
+        // arrayMinVal = d3.min(arrayOfNumbers)
+        // // find the maximum value
+        // arrayMaxVal = d3.max(arrayOfNumbers);
+        // // use an accessor
+        // arrayMinValGreaterThan58 = d3.min(arrayOfNumbers, function(d){
+        //   return d > 58 ? d : undefined });
+        // arrayMaxValLessThan76 = d3.max(arrayOfNumbers, function(d){
+        //   if (d < 76) return d 
+        //   });
+        // // do them both
+        // extentOfAnArray = d3.extent(arrayOfNumbers);
+        // // do them both with an accessor
+        // extentOfAnArray72to60 = d3.extent(arrayOfNumbers, function(d){
+        //   if (72 > d && d > 60) return d 
+        //   });
+        // // also try d3.mean, d3.median, d3.quantile, and bisect methods...
+        // // randomly shuffle an array
+        // dummyArray = _.clone(arrayOfNumbers);
+        // randomizedArray = d3.shuffle(dummyArray)
+
+        // // create a d3 set
+        // ourD3Set = d3.set(arrayOfNumbers);
+        // // return the unique values in an array
+        // // careful, returns strings!
+        // uniqueValuesFromAnArray = ourD3Set.values();
+        // // check if a value exists in an array
+        // shouldBeTrue = ourD3Set.has(58);
+        // shouldBeFalse = ourD3Set.has(10000000);
+        // // remove a value from an array
+        // // dummyArray = ourD3Set.
+        // removedAll58s = (function() {
+        //   ourD3Set.remove(58);
+        //   return ourD3Set.values()
+        // })();
+
+        // // lo-dash array and collection methods
+        // // Create an array with all duplicate values removed
+        // // similar to operating on d3 sets
+        // loDashSet = _.unique(arrayOfNumbers)
+
+        // // remove certain elements
+        // loDashRemoveNumbers = _.remove(arrayOfNumbers, function(element){
+        //   return element % 10 == 0; });
+
+        // // create an array with falsey values
+        // falseyArray = _.chain(arrayOfNumbers)
+        //                 .clone()
+        //                 .push(undefined, false, false, undefined,undefined)
+        //                 .shuffle()
+        //                 .value();
+        // // or
+        // // falseyArray = _.clone(arrayOfNumbers);
+        // // falseyArray.push(undefined, false, false, undefined, undefined);
+        // // falseyArray = _.shuffle(falseyArray);
         
-        // create an array with falsey values removed
-        compactArray = _.compact(falseyArray);
+        // // create an array with falsey values removed
+        // compactArray = _.compact(falseyArray);
 
-        // create a multi dimensional array
-        multiDimensionalArray = dataFromCallback.map(function(d) {
-          return [d.Year,d.Top10] 
-        });
-        // 'flatten' a multi dimensional array
-        flattenedArray = _.flatten(multiDimensionalArray);
+        // // create a multi dimensional array
+        // multiDimensionalArray = dataFromCallback.map(function(d) {
+        //   return [d.Year,d.Top10] 
+        // });
+        // // 'flatten' a multi dimensional array
+        // flattenedArray = _.flatten(multiDimensionalArray);
         
-        // create an array for the Top10 and the Top1 segements
-        Top10Arrray = dataFromCallback.map(function(d) {
-          return d.Top10;
-        });
-        Top1Array = dataFromCallback.map(function(d) {
-          return d.Top1;
-        });
+        // // create an array for the Top10 and the Top1 segements
+        // Top10Arrray = dataFromCallback.map(function(d) {
+        //   return d.Top10;
+        // });
+        // Top1Array = dataFromCallback.map(function(d) {
+        //   return d.Top1;
+        // });
         
-        // the following methods use strict === equality measures: 
+        // // the following methods use strict === equality measures: 
 
-        // Create a new array with only UNIQUE values that appeared 
-        // in all arrays
-        interesectedArray = _.intersection(Top10Arrray, Top1Array);
+        // // Create a new array with only UNIQUE values that appeared 
+        // // in all arrays
+        // interesectedArray = _.intersection(Top10Arrray, Top1Array);
         
-        // Create a new array with only values that appeared in one array or the other
-        differencedArray = _.difference(Top10Arrray, Top1Array);
+        // // Create a new array with only values that appeared in one array or the other
+        // differencedArray = _.difference(Top10Arrray, Top1Array);
 
-        // Create a new array with all unique values from all arrays
-        unitedArray = _.union(Top10Arrray, Top1Array);
+        // // Create a new array with all unique values from all arrays
+        // unitedArray = _.union(Top10Arrray, Top1Array);
 
       });
   </script>
