@@ -7,21 +7,50 @@
   
   <!-- Data manipulations -->
   <script type="text/javascript">
-    var datas = {};
+    var globals = {};
 
 
     d3.csv('../../../../course/data/Inequality.csv', function(data) {
+        globals.dataFromInequalityCallback = data
+      
+        d3.csv('../../../../course/data/USgdpGrowthAndPerCapita.csv', function(data) {
+            globals.dataFromGDPCallback = data
 
-      d3.csv('../../../../course/data/USgdpGrowthAndPerCapita.csv', function(data) {
-        debugger;
-      });
-        // set global variable, so we can access it out side of the callback
-        dataFromCallback = data;
-        
+            // lets create a little bit better looking data set
+            globals.mappedGDP = data.map( function(d) {
+                result = {
+                    "CountryName": d["Country Name"],
+                    "SeriesName": d["Series Name"],
+                    "Data": _.omit(d, "Series Name", "Country Name")
+                }
+                return result
+            });
 
+            // lets GDP against inqequality for every year we have
+            globals.GDPvsInequality = globals.dataFromInequalityCallback.map( function(d){
+                currentYear = d.Year
+                gdpPerCapita = globals.mappedGDP[0]
+                if (gdpPerCapita.Data[currentYear]) {
+                    
+                    results = {}
+                    results.year = currentYear
+                    results.top10 = d.Top10
+                    results.gdpPerCapita = gdpPerCapita.Data[currentYear]
 
+                    return results
+                }
+            })
+            // remove undefined values
+            globals.GDPvsInequalityClean = _.compact(globals.GDPvsInequality); 
 
+            
+        });
 
+    });
+
+      
+
+    
 
 
         // // lets make this an array of numbers, instead of an array
@@ -133,7 +162,5 @@
 
         // // Create a new array with all unique values from all arrays
         // unitedArray = _.union(Top10Arrray, Top1Array);
-
-      });
   </script>
 </body>

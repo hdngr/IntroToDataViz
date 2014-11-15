@@ -1,0 +1,258 @@
+<html>
+<head>
+<style type="text/css">
+
+    rect {
+        fill: none;
+        stroke: black;
+    }
+    g.nodes text {
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+    <div id="container">
+        <svg id="complaints"></svg>
+    </div>
+    <!-- Include lo-dash -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js" charset="utf-8"></script>
+    <!-- Include d3.js -->
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        // constants
+        var height = 800,
+            width = 1000,
+            margin = 20,
+            colors = d3.shuffle(["#DD79FF", "#FFFC00",
+                                 "#00FF30", "#5168FF",
+                                 "#00C0FF", "#FF004B",
+                                 "#00CDCD", "#f83f00",
+                                 "#f800df", "#ff8d8f",
+                                 "#ffcd00", "#184fff",
+                                 "#ff7e00"]),
+            buttonHeight = 30,
+            buttonWidth = 200,
+            buttonPadding = 30,
+            border = 4,
+            bordercolor = "black";
+ 
+
+        // viz set up
+        var svg = d3.select("#complaints"),       
+    
+            viz = svg.attr("height", height)
+                     .attr("width", width)
+                    .append("g")
+                     .attr("id", "viz"),
+    
+            forceLayout = d3.layout.force()
+                           .size([width, height])
+                           .charge(20),
+         
+            xScale = d3.scale.linear()
+                          .range([0, width]),
+     
+            complaints = undefined;
+
+        viz.append('rect')
+            .attr("height", height)
+            .attr("width", width)
+            .style("stroke", bordercolor)
+            .style("fill", "none")
+            .style("stroke-width", border);
+
+        forceStart = svg.append('g')
+            .attr('id', "forceStart")
+            .attr("transform", "translate(0," + margin + ")")
+            .on("click", forceStart )
+            .style("cursor", "pointer");
+            
+        forceStart.append('rect')
+                    .attr("height", buttonHeight)
+                    .attr("width", buttonWidth)
+
+        forceStart.append('text')
+            .text('force start')
+            .attr('dy', buttonHeight/2)
+       
+        forceStop = svg.append('g')
+            .attr('id', "forceStop")
+            .on("click", forceStop)
+            .attr("transform", "translate(0," + margin * 3 + ")")
+            .style("cursor", "pointer");
+        
+        forceStop.append('rect')
+            .attr("height", buttonHeight)
+            .attr("width", buttonWidth)
+    
+        forceStop.append('text')
+            .text('force stop')
+            .attr('dy', buttonHeight/2)
+
+
+
+
+
+        d3.csv('../../../../course/data/Consumer_Complaints.csv', function(data) {
+      
+
+                results = {}
+                complaints = []
+                for (var i = 0; i < data.length; i++) {
+                    element = data[i]
+                    company = element.Company
+                    complaint = element.Product
+
+                    if (!results[company]) {
+                        results[company] = []
+                    };
+                    complaints.push(complaint);
+                    results[company].push(complaint);
+                }
+                complaints = _.uniq(complaints);
+                
+                // map array of results to "scores" of the number // of complaints
+                results = _.mapValues(results, function(complaints) {
+                    return _.countBy(complaints)
+                })
+                
+                // results.map(function(item) {
+                results = _.map(_.keys(results), function(keyy){
+                    mapp = {}
+                    mapp["name"] = keyy 
+                    mapp["complaints"] = results[keyy]
+                    return mapp
+                })
+
+                // set up xScale
+                setUpXscale("Debt collection");
+
+                nodes = viz.selectAll("g.nodes")
+                    .data(results)
+                    .enter().append('g')
+                    .attr('class', 'nodes')
+                    .attr("transform", function(d,i) {
+                        return "translate("+ xScale(d.complaints["Debt collection"])+",0)"
+                    })
+                    .on("mouseover", function(d) {
+                        d3.select(this).select('text').style('display', 'block');
+                    })
+
+    
+                nodes.append("circle")
+                    .attr("r", function(d) {
+                        return d.complaints["Debt collection"]/ 10
+                    })
+                    .attr("fill", function() {
+                        return colors[Math.floor(Math.random() * (colors.length))]
+                    });
+
+                nodes.append('text')
+                      .text(function(d){ 
+                        return d.name})
+                      .style("font-size", function(d) {
+                        return d.complaints["Debt collection"]/ 10
+                      });
+
+                forceLayout.nodes(results)
+                            .start();
+
+            // create buttons with svg - horrible
+            buttons = viz.selectAll('g.buttons')
+                .data(complaints)
+            .enter(complaints).append("g")
+                .attr('class', "buttons")
+                .attr("transform", function(d,i) {
+                    return "translate(" + i * buttonWidth + "," + margin + ")"})
+                .style("cursor", "pointer");
+            
+            buttons.append('rect')
+                .attr("height", 30)
+                .attr("width", 200)
+                .style("cursor", "pointer")
+                .on("click", function(d){
+                    label = d;
+                    setUpXscale(label);
+                    transitionCircles(label);
+                    });
+
+            buttons.append('text')
+                    .style("cursor", "pointer")
+                    .text(function(d) {return d})
+                    .attr('dy', buttonHeight / 2 )
+                    .attr('dx', buttonPadding );
+
+            // create buttons with HTML
+            d3.select("#container")
+                .selectAll('div.buttons')
+                .data(complaints)
+               .enter(complaints).append('div')
+                .attr('class', 'buttons')
+                .text(function(d) {return d})
+                .on("click", function(d) {
+                    label = d;
+                    setUpXscale(label);
+                    transitionCircles(label);
+                });
+
+            forceLayout.on("tick", function(){
+                nodes.selectAll('circle')
+                        .attr('cy', function(d) {return d.y});
+                nodes.selectAll('text')
+                        .attr('dy', function(d) {return d.y});
+            });
+
+        });
+            
+        // refactor xScale based on current label/dataset
+        setUpXscale = function(label){
+                    entireRange = _.map(results, function(element) {
+                        return element.complaints[label];
+                    });
+                    xScale.domain([_.min(entireRange), _.max(entireRange)]);
+                };
+
+        function wezoomed() {
+              viz.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            };
+        
+        function forceStop() {
+            forceLayout.stop();
+        };
+
+        function forceStart() {
+            forceLayout.start();
+        };
+
+        function transitionCircles(label) {
+            nodes = viz.selectAll("g.nodes")
+                        .transition()
+                        .duration(1000)
+                        .sort(function(d) {
+                            return d.complaints[label]
+                        })
+                        .attr("transform", function(d,i) {
+                            return "translate("+ xScale(d.complaints[label])+",0)"
+                        })
+            
+            nodes.selectAll("circle")
+                        .attr("cy", function(d) {return d.y})
+                        .attr("r", function(d,i) {
+                            return d.complaints[label]
+                        })
+            
+            nodes.selectAll('text')
+                      .style("font-size", function(d) {
+                        return d.complaints[label]/ 10
+                    });
+                };
+
+        var zoom = d3.behavior.zoom()
+                              .scaleExtent([0.7, 10])
+                              .on("zoom", wezoomed);
+
+        svg.call(zoom);
+    </script>
+</body>
