@@ -1,0 +1,46 @@
+<html>
+<body>
+
+  <!-- Include d3.js -->
+  <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+  <!-- Include lo-dash -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js" charset="utf-8"></script>
+  
+  <!-- Data manipulations -->
+  <script type="text/javascript">
+
+    viz = d3.select('body').append('svg');
+
+    d3.csv('../../../../course/data/Inequality.csv', function(data) {
+
+      // set global variable, so we can access it out side of the callback
+      dataFromCallback = data;
+
+      // create a multi dimensional array
+      multiDimensionalArray = dataFromCallback.map(function(d) {
+        return [d.Year,d.Top10] 
+      });
+
+      gToplevel = viz.selectAll('g.toplevel')
+          .data(multiDimensionalArray)
+          .enter().append('g')
+          .attr('class', 'toplevel');
+
+      gToplevel.append('circle')
+      gToplevel.append('text')
+      gToplevel.append('foobar')
+
+      gInherited = viz.selectAll('g.inherited')
+                      .data(multiDimensionalArray)
+                      .enter().append('g')
+                      .attr('class', 'inherited')
+
+                      gInherited.selectAll('circle')
+                      .data(function(d) {return d})
+                      .enter()
+                      .append('circle');
+
+      });
+  </script>
+</body>
+  

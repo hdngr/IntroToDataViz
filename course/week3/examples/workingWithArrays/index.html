@@ -85,7 +85,7 @@
         // also try d3.mean, d3.median, d3.quantile, and bisect methods...
         // randomly shuffle an array
         dummyArray = _.clone(arrayOfNumbers);
-        randomizedArray = d3.shuffle(dummyArray)
+        randomizedArray = function() { return d3.shuffle(dummyArray)};
 
         // create a d3 set
         ourD3Set = d3.set(arrayOfNumbers);
