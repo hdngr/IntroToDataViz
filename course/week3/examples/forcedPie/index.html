@@ -3,12 +3,18 @@
 <style type="text/css">
 
     rect {
+        
         fill: none;
         stroke: black;
+
     }
+
     g.nodes text {
+        
         display: none;
+
     }
+
 </style>
 </head>
 
@@ -53,8 +59,12 @@
          
             xScale = d3.scale.linear()
                           .range([0, width]),
+
+            rScale = d3.scale.linear()
+                          .range([2,100]),
      
-            complaints = undefined;
+            complaints = undefined,
+            activeLabel = undefined;
 
         viz.append('rect')
             .attr("height", height)
@@ -108,15 +118,17 @@
                     if (!results[company]) {
                         results[company] = []
                     };
+
                     complaints.push(complaint);
                     results[company].push(complaint);
                 }
+
                 complaints = _.uniq(complaints);
                 
                 // map array of results to "scores" of the number // of complaints
                 results = _.mapValues(results, function(complaints) {
                     return _.countBy(complaints)
-                })
+                });
                 
                 // results.map(function(item) {
                 results = _.map(_.keys(results), function(keyy){
@@ -124,10 +136,10 @@
                     mapp["name"] = keyy 
                     mapp["complaints"] = results[keyy]
                     return mapp
-                })
+                });
 
                 // set up xScale
-                setUpXscale("Debt collection");
+                setUpScales("Debt collection");
 
                 nodes = viz.selectAll("g.nodes")
                     .data(results)
@@ -140,10 +152,9 @@
                         d3.select(this).select('text').style('display', 'block');
                     })
 
-    
                 nodes.append("circle")
                     .attr("r", function(d) {
-                        return d.complaints["Debt collection"]/ 10
+                        return rScale(d.complaints["Debt collection"])
                     })
                     .attr("fill", function() {
                         return colors[Math.floor(Math.random() * (colors.length))]
@@ -166,17 +177,17 @@
                 .attr('class', "buttons")
                 .attr("transform", function(d,i) {
                     return "translate(" + i * buttonWidth + "," + margin + ")"})
-                .style("cursor", "pointer");
+                .style("cursor", "pointer")
+                .on("click", function(d){
+                    label = d;
+                    setUpScales(label);
+                    transitionCircles(label);
+                    });
             
             buttons.append('rect')
                 .attr("height", 30)
                 .attr("width", 200)
                 .style("cursor", "pointer")
-                .on("click", function(d){
-                    label = d;
-                    setUpXscale(label);
-                    transitionCircles(label);
-                    });
 
             buttons.append('text')
                     .style("cursor", "pointer")
@@ -193,7 +204,7 @@
                 .text(function(d) {return d})
                 .on("click", function(d) {
                     label = d;
-                    setUpXscale(label);
+                    setUpScales(label);
                     transitionCircles(label);
                 });
 
@@ -206,12 +217,14 @@
 
         });
             
-        // refactor xScale based on current label/dataset
-        setUpXscale = function(label){
+        // refactor xScale and rScale based on current label/dataset
+        setUpScales = function(label){
                     entireRange = _.map(results, function(element) {
                         return element.complaints[label];
                     });
-                    xScale.domain([_.min(entireRange), _.max(entireRange)]);
+                    domain = d3.extent(entireRange)
+                    xScale.domain(domain);
+                    rScale.domain(domain);
                 };
 
         function wezoomed() {
@@ -227,12 +240,13 @@
         };
 
         function transitionCircles(label) {
+            
+            activeLabel = label
+            
             nodes = viz.selectAll("g.nodes")
-                        .transition()
+            
+            nodes.transition()
                         .duration(1000)
-                        .sort(function(d) {
-                            return d.complaints[label]
-                        })
                         .attr("transform", function(d,i) {
                             return "translate("+ xScale(d.complaints[label])+",0)"
                         })
@@ -240,7 +254,7 @@
             nodes.selectAll("circle")
                         .attr("cy", function(d) {return d.y})
                         .attr("r", function(d,i) {
-                            return d.complaints[label]
+                            return rScale(d.complaints[label])
                         })
             
             nodes.selectAll('text')
