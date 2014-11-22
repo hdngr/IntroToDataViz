@@ -1,0 +1,367 @@
+<html>
+<head>
+<style type="text/css">
+
+    rect {
+        
+        fill: none;
+        stroke: black;
+
+    }
+
+    g.nodes text {
+        
+        display: none;
+
+    }
+
+
+    .button {
+        display: inline;
+        margin: 10 2 10 2;
+        padding: 5;
+        border: #0094f5 2px solid;
+        cursor: pointer;
+    }
+    .button:hover {
+        font: white;
+        background: #0094f5;
+    }
+
+    svg#complaints {
+        display: block;
+        margin: 10 2 10 2;
+    }
+
+    .button.colors-selector {
+        border: #ce00d5 2px solid;
+    }
+    
+    g.nodes circle {
+        fill: none;
+        stroke: black;
+    }
+</style>
+</head>
+
+<body>
+    <div id="container">
+        <svg id="complaints"></svg>
+    </div>
+    <!-- Include lo-dash -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js" charset="utf-8"></script>
+    <!-- Include d3.js -->
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        // constants
+        var height = 500,
+            width = 800,
+            margin = 20,
+            colors = d3.shuffle(["#DD79FF", "#FFFC00",
+                                 "#00FF30", "#5168FF",
+                                 "#00C0FF", "#FF004B",
+                                 "#00CDCD", "#f83f00",
+                                 "#f800df", "#ff8d8f",
+                                 "#ffcd00", "#184fff",
+                                 "#ff7e00"]),
+            buttonHeight = 30,
+            buttonWidth = 200,
+            buttonPadding = 30,
+            border = 4,
+            bordercolor = "black";
+ 
+
+        // viz set up
+        var svg = d3.select("#complaints"),       
+    
+            viz = svg.attr("height", height)
+                     .attr("width", width)
+                    .append("g")
+                     .attr("id", "viz"),
+    
+            rScale = d3.scale.linear()
+                          .range([2,100]),
+    
+            forceLayout = d3.layout.force()
+                                   .size([width, height])
+                                   .charge(function(d) {
+                                    return d.r * 10 })
+                                   .gravity(-0.1)
+                                   .friction(0.8);
+
+
+        svg.append('rect')
+            .attr("height", height)
+            .attr("width", width)
+            .style("stroke", bordercolor)
+            .style("fill", "none")
+            .style("stroke-width", border);
+
+        container = d3.select("#container");
+        title = container.insert('h1', ':first-child')
+                    .text('Consumer issues and complains received by Bank of America.');
+
+        container.insert("div", '#complaints')
+                  .attr('class', 'button')
+                  .attr('id', 'force-start')
+                  .on('click', forceStart)
+                  .text('Force Start');
+                  
+
+        container.insert("div", '#complaints')
+                  .attr('class', 'button')
+                  .attr('id', 'force-stop')
+                  .on('click', forceStop)
+                  .text('Force Stop');
+                  
+
+        container.insert("div", '#complaints')
+                  .attr('class', 'button')
+                  .attr('id', 'issues')
+                  .on('mouseenter', function(){ lightNodes('issues')})
+                  .on('mouseleave', lightNodes)
+                  .text('issues');
+
+        container.insert("div", '#complaints')
+                  .attr('class', 'button')
+                  .attr('id', 'products')
+                  .on('mouseenter', function(){lightNodes('products')})
+                  .on('mouseleave', lightNodes)
+                  .text('products');
+
+        container.insert("div", '#complaints')
+                  .attr('class', 'button colors-selector')
+                  .attr('id', 'linear')
+                  .on('click', function() { colorClick('linear')})
+                  .text('linear color');
+                
+        container.insert("div", '#complaints')
+                  .attr('class', 'button colors-selector')
+                  .attr('id', 'category')
+                  .on('click', function(){
+                    z = d3.scale.category20c()
+                                    .domain('products', 'issues');
+                    
+                    z.range(d3.shuffle(z.range()));
+                        d3.selectAll('g.nodes')
+                            .select('circle')
+                            .style('fill', function(d) { 
+                                return z(d.type)});
+                  })
+                  .text('category color');
+
+
+        var linearColorScale = d3.scale.linear()
+                                        .range(["#c200d5", "blue"]);
+
+
+        d3.csv('../../../../course/data/Consumer_Complaints_Small.csv', function(data) {
+      
+                results = {}
+                products = []
+                issues = []
+                
+                for (var i = 0; i < data.length; i++) {
+                    element = data[i]
+                    // we know that the only company here is BofA
+                    company = element.Company
+                    product = element.Product
+                    issue = element.Issue
+
+                    if (!results[company]) {
+                        results[company] = {
+                            'products': [],
+                            'issues': []
+                        }
+                    };
+                    // creating an index of products
+                    products = _.uniq(products, product);
+                    // creating an index of issues
+                    issues = _.uniq(issues, issue);
+                    
+                    results[company]['products'].push(product);
+                    results[company]['issues'].push(issue);
+                }
+                
+                // map array of results to "scores" of the number // of complaints
+                results = _.mapValues(results, function(obj) {
+                    scores = _.mapValues(obj, function(things) {
+                        return _.countBy(things)
+                    });
+                    return scores
+                });
+                
+                data2bind = _.map(results["Bank of America"],function(counts,type) {
+                        results = []
+                        _.map(counts, function(value, key) {
+                            result = {}
+                            result[key] = value
+                            result.type = type 
+                            results.push(result)
+                    })
+                    return results
+                }) 
+
+                // set up xScale
+                setUpScales();
+
+                groups = viz.selectAll("g.group")
+                             .data(data2bind)
+                             .enter().append('g')
+                             .attr('class', function(d, i) {
+                                if (i == 0) {
+                                    return 'group products'
+                                }
+                                else {
+                                    return 'group issues'
+                                }
+                            });
+                
+                productNodes = groups.filter('.products')
+                                    .selectAll('g.node')
+                                    .data(function(d) {return d})
+                                    .enter()
+                                    .append('g')
+                                    .attr('class', 'nodes')
+                                    .call(forceLayout.drag);
+
+                issueNodes = groups.filter('.issues')
+                                    .selectAll('g.node')
+                                    .data(function(d) {return d})
+                                    .enter()
+                                    .append('g')
+                                    .attr('class', 'nodes')
+                                    .call(forceLayout.drag);
+
+                productNodes.append('circle')
+                                .attr('r', function(d) {
+                                    values = _.values(d)
+                                    value = _.filter(d, function(d) {
+                                        if (typeof d == "number")return d 
+                                    });
+                                    d.r = rScale(value[0])
+                                    return d.r;
+                                });
+
+                issueNodes.append('circle')
+                               .attr('r', function(d) {
+                                    values = _.values(d)
+                                    value = _.filter(d, function(d) {
+                                        if (typeof d == "number")return d 
+                                    });
+                                    d.r = rScale(Math.sqrt(value[0]/Math.PI))
+                                    return d.r;
+                                });
+
+
+
+                forceLayout.nodes(data2bind[0].concat(data2bind[1]))
+                            .start();
+
+            forceLayout.on("tick", function(){
+                nodes = forceLayout.nodes()
+                var q = d3.geom.quadtree(nodes),
+                    i = 0,
+                    n = nodes.length;
+
+                while (++i < n) q.visit(collide(nodes[i]));
+
+                issueNodes.attr("transform", function(d) {
+                    d.x = Math.max(d.r, Math.min(width - d.r, d.x));
+                    d.y = Math.max(d.r, Math.min(height - d.r, d.y));
+                    return "translate(" + d.x + "," + d.y + ")";
+                    });
+                productNodes.attr("transform", function(d) {
+                    d.x = Math.max(d.r, Math.min(width - d.r, d.x));
+                    d.y = Math.max(d.r, Math.min(height - d.r, d.y));
+                    return "translate(" + d.x + "," + d.y + ")";
+                    });
+            });
+
+        });
+            
+        // refactor xScale and rScale based on current label/dataset
+        setUpScales = function(type){
+                entireRange = function(element) {
+                    values = _.map(data2bind[element], function(d) {return _.values(d)});
+                    values = _.flatten(values);
+                    values = _.filter(values, function(d) {
+                        return typeof d == "number"
+                    });
+                    return values
+                };
+                products = entireRange(0);
+                issues = entireRange(1);    
+                all = products.concat(issues);
+                domain = d3.extent(all);
+                rScale.domain(domain);            
+                };
+        
+        colorClick = function(scale) {
+            if (scale == "linear") {
+                domain = _.forEach(rScale.domain(), function(a){
+                    return Math.sqrt(a/Math.PI);
+                })
+                linearColorScale.domain(domain);
+                viz.selectAll('g.nodes')
+                    .select('circle')
+                    .style('fill', function(d) {return linearColorScale(d.r)});
+            }
+        }
+
+        function forceStop() {
+            forceLayout.stop();
+        };
+
+        function forceStart() {
+            forceLayout.start();
+        };
+
+        function collide(node) {
+          var r = node.r + 1,
+              nx1 = node.x - r,
+              nx2 = node.x + r,
+              ny1 = node.y - r,
+              ny2 = node.y + r;
+          return function(quad, x1, y1, x2, y2) {
+            if (quad.point && (quad.point !== node)) {
+              var x = node.x - quad.point.x,
+                  y = node.y - quad.point.y,
+                  l = Math.sqrt(x * x + y * y),
+                  r = node.r + quad.point.r;
+              if (l < r) {
+                l = (l - r) / l * .5;
+                node.x -= x *= l;
+                node.y -= y *= l;
+                quad.point.x += x;
+                quad.point.y += y;
+              }
+            }
+            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+          };
+        };
+
+        function lightNodes(param) {
+            switch (param) {
+                case undefined:
+                    viz.selectAll('g.nodes')
+                        .select('circle')
+                        .style('stroke', 'black');
+                    break;
+                case 'issues':
+                    viz.selectAll('.issues g.nodes')
+                        .select('circle')
+                        .style('stroke', 'red')
+                        .style('stroke-width', function(d) {return d.r/10});
+                    break;
+                case 'products':
+                    viz.selectAll('.products g.nodes')
+                        .select('circle')
+                        .style('stroke', 'red')
+                        .style('stroke-width', function(d) {return d.r/10});
+                    break;
+                }
+        };
+
+    </script>
+</body>
